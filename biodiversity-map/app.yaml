@@ -1,0 +1,38 @@
+application: direct-bonsai-853
+## Had to switch to version 2 because of an error with the app launcher
+version: 2 
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# Our handlers - stylesheets and javascripts goes with our front-end, 
+# oauth is required by Earth and App Engine
+# map\.html goes with our map.html
+# static goes with our index.html
+# The star is for any other call made to the earth engine app
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+- url: /javascripts
+  static_dir: javascripts
+- url: /oauth2callback
+  script: oauth2client.appengine.application
+- url: /map\.html
+  script: ee_appengine.app
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+- url: /.*
+  script: ee_appengine.app
+
+# jinja is for our map app environment
+# webapp is for app engine, I think
+# pycrypto is for security, I think
+# honestly, the app engine API is a better source to understand what these things are
+libraries:
+- name: jinja2
+  version: "2.6"
+- name: webapp2
+  version: "2.5.2"
+- name: pycrypto
+  version: "2.6"

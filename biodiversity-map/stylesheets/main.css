@@ -1,0 +1,13 @@
+/**
+* Custom styling for the index.html
+*/
+
+.container h1 {
+	font-size: 40px;
+}
+.map-body {
+	padding: 0px;
+}
+body {
+	padding-top: 75px;
+}

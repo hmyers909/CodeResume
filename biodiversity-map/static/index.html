@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+The static front page which contains an iFrame where a custom map is painted.
+-->
+<html>
+  <head>
+    <title>DoW biodiversity</title>
+    <link rel = "stylesheet" href = "stylesheets/bootstrap.css">
+		<link rel = "stylesheet" href = "stylesheets/main.css">
+    <script type="text/javascript"
+      src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src = "javascripts/bootstrap.js"></script>
+    <script type = "text/javascript">
+
+      /**
+      * getData() gets information from the dropdowns and returns the
+      * information as a string.
+      * @params There are no parameters, rather the information grabbed is from
+      * the dropdowns. If nothing has been selected, the value 'none' is sent.
+      * @returns The returned string is in the form of a URL used by the jinja
+      * in ee_appengine.py to select what information to display.
+      */
+      function getData() {
+        var x = document.getElementById("speciesSelection");
+        var s = x.options[x.selectedIndex].value;
+        var y = document.getElementById("conservationSelection");
+        var c = y.options[y.selectedIndex].value;
+        var z = document.getElementById("landcoverSelection");
+        var l = z.options[z.selectedIndex].value;
+
+        return "/map.html?species="+s+"&landcover="+l+"&conservation="+c;
+      };
+
+      /**
+      * goFunc() sends a new URL to the map's iFrame to display new data.
+      * goFunc() first gets information from getData() and then sets the URL
+      * for the iFrame to a custom URL.
+      * @returns Nothing is returned, this funtion refreshes the iFrame
+      */
+      function goFunc() {
+        var newSrc = getData();
+        document.getElementById("mapFrame").src=newSrc;
+      };
+
+
+    </script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+	    		<a class="navbar-brand" href="http://defenders.org">
+						Defenders of Wildlife
+					</a>
+	    	</div>
+				<ul class = "nav navbar-nav pull-right">
+					<li><a href = "https://example.com/about">About</a></li>
+				</ul>
+			</div>
+		</nav>
+
+    <!--
+    These divs are a part of the Bootstrap method of laying things out.
+    -->
+		<div class = "container">
+			<div class = "row">
+				<div class = "col-md-3">
+					<div class = "panel panel-default">
+						<div class = "panel-body">
+
+              <!--
+              These are not Bootstrap dropdowns, they are the HTML kind, and as such do not have divs of their own.
+              -->
+              <select id="speciesSelection">
+                <option value="none">Select a Species</option>
+                <option value="alabamaBeachMouse">Alabama Beach Mouse</option>
+                <option value="marbledMurrelet">Marbled Murrelet</option>
+                <option value="alamedaWhipsnake">Alameda Whipsnake</option>
+                <!--<option value="caGnatcatcher">California Gnatcatcher</option>-->
+                <option value="redLegFrog">California Red-Legged Frog</option>
+                <!--<option value="desertTort">Desert Tortoise</option>-->
+                <option value="snailKite">Everglades Snail Kite</option>
+                <option value="leastBell">Least Bell's Vireo</option>
+                <option value="kangarooRat">San Bernardino Kangaroo Rat</option>
+                <!--<option value="topekaShiner">Topeka Shiner</option>-->
+              </select>
+
+              <select id="conservationSelection">
+                <option value="none">Conservation Data</option>
+                <option value="california">California</option>
+                <!--<option value="oregon">Oregon</option>-->
+              </select>
+
+              <select id="landcoverSelection">
+                <option value="none">Land Cover Data</option>
+                <option value="NLCD2011">National Land Cover Data 2011</option>
+              </select>
+
+              <!--
+              A Bootstrap styled button, on clicking this button, goFunc() is called, leading the map iFrame (mapFrame) ot be reloaded.
+              -->
+              <div class = "btn">
+                <button type="button" class="btn btn-default" id="goButton" onClick="goFunc()">Create map</button>
+              </div>
+
+						</div>
+					</div>
+				</div>
+
+        <!--
+        This is the div containing the map iFrame. The reason that Width is set at 100% is that it is 100% or the col-md-9 which is actually 75% of a mid-sized window.
+        -->
+				<div class = "map-body col-md-9">
+					<iframe id = "mapFrame" src="https://direct-bonsai-853.appspot.com/map.html" height = "480" width = "100%" style="border:none">
+					</iframe>
+				</div>
+
+			</div>
+		</div>
+
+  </body>
+</html>
